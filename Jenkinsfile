@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "tmdb-devops-challenge"
+        DOCKER_IMAGE = "hossammoh/tmdb-devops-challenge"
         DOCKER_REGISTRY = "index.docker.io"
         DOCKER_CREDENTIALS_ID = "dockerhub-credentials"
     }
@@ -15,7 +15,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/<your-username>/tmdb-devops-challenge.git'
+                git url: 'https://github.com/hossam692/tmdb-devops-challenge.git'
             }
         }
 
