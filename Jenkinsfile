@@ -25,16 +25,29 @@ pipeline {
             }
         }
 
-        stage('Lint and Test') {
-            parallel {
-                stage('Lint') {
-                    steps {
+        stage('Lint') {
+            steps {
+                script {
+                    try {
                         sh 'npm run lint'
+                    } catch (Exception e) {
+                        echo 'Linting failed'
+                        currentBuild.result = 'FAILURE'
+                        throw e
                     }
                 }
-                stage('Test') {
-                    steps {
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    try {
                         sh 'npm test'
+                    } catch (Exception e) {
+                        echo 'Tests failed'
+                        currentBuild.result = 'FAILURE'
+                        throw e
                     }
                 }
             }
@@ -64,6 +77,7 @@ pipeline {
             }
         }
     }
+
     post {
         success {
             echo 'Pipeline succeeded!'
