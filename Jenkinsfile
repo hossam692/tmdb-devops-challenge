@@ -15,7 +15,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/hossam692/tmdb-devops-challenge.git'
+                git url: 'https://github.com/hossam692/tmdb-devops-challenge.git', branch: "${env.BRANCH_NAME}"
             }
         }
 
@@ -64,7 +64,6 @@ pipeline {
             }
         }
     }
-    // This is an optional enhancement to get deployment notifications
     post {
         success {
             echo 'Pipeline succeeded!'
