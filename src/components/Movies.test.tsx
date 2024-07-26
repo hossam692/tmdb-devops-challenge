@@ -3,8 +3,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Movies from './Movies';
 
-test('renders Movies component', () => {
+test('renders TMDB Code Challenge heading', () => {
   render(<Movies />);
-  const element = screen.getByText(/some text that should be in the Movies component/i);
-  expect(element).toBeInTheDocument();
+  const headingElement = screen.getByText(/TMDB Code Challenge/i);
+  expect(headingElement).toBeInTheDocument();
 });
