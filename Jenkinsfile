@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "hossammoh/tmdb-devops-challenge${env.BRANCH_NAME}"
+        IMAGE_NAME = "hossammoh/tmdb-devops-challenge:${env.BRANCH_NAME}"
     }
 
     stages {
@@ -27,8 +27,8 @@ pipeline {
         stage('Setup ESLint') {
             steps {
                 script {
-                    // Install ESLint and plugins
-                    sh 'npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y eslint-plugin-import'
+                    // Install ESLint and plugins with --legacy-peer-deps flag
+                    sh 'npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y eslint-plugin-import --legacy-peer-deps'
 
                     // Add basic ESLint configuration file
                     writeFile file: '.eslintrc.json', text: '''{
