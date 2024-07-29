@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "hossammoh/tmdb-devops-challenge:${env.BRANCH_NAME}"
+        IMAGE_NAME = "hossammoh/tmdb-devops-challenge${env.BRANCH_NAME}"
     }
 
     stages {
@@ -20,6 +20,30 @@ pipeline {
                     } else {
                         sh 'npm ci'
                     }
+                }
+            }
+        }
+
+        stage('Setup ESLint') {
+            steps {
+                script {
+                    // Install ESLint and plugins
+                    sh 'npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y eslint-plugin-import'
+
+                    // Add basic ESLint configuration file
+                    writeFile file: '.eslintrc.json', text: '''{
+                        "parser": "@typescript-eslint/parser",
+                        "extends": [
+                          "eslint:recommended",
+                          "plugin:react/recommended",
+                          "plugin:@typescript-eslint/recommended"
+                        ]
+                      }'''
+
+                    // Modify package.json to add lint script
+                    def packageJson = readJSON file: 'package.json'
+                    packageJson.scripts.lint = "eslint 'src/**/*.{js,jsx,ts,tsx}'"
+                    writeJSON file: 'package.json', json: packageJson, pretty: 4
                 }
             }
         }
@@ -56,7 +80,7 @@ pipeline {
             }
             steps {
                 script {
-                    docker.withRegistry('https://${DOCKER_REGISTRY}', 'docker-credentials-id') {
+                    docker.withRegistry('https://${DOCKER_REGISTRY}, 'docker-credentials-id') {
                         def app = docker.build("${env.IMAGE_NAME}")
                         app.push()
                     }
