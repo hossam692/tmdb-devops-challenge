@@ -80,7 +80,7 @@ pipeline {
             }
             steps {
                 script {
-                    docker.withRegistry('https://${DOCKER_REGISTRY}, 'docker-credentials-id') {
+                    docker.withRegistry('https://${DOCKER_REGISTRY}', 'docker-credentials-id') {
                         def app = docker.build("${env.IMAGE_NAME}")
                         app.push()
                     }
